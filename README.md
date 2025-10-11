@@ -40,8 +40,15 @@ Run the provided script in tests/:
 
 python tests/test_yahoo_access.py
 
+#### NewsAPI
+To test data access and prepare a small sample dataset from NewsAPI:
 
-This script downloads a small sample dataset and saves it locally in:
+Run the provided script in tests/:
+
+python tests/test_newsapi_access.py
+
+####
+These scripts download a small sample dataset and save it locally in:
 
 tests/data/
 
