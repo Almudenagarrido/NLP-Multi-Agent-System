@@ -31,6 +31,20 @@ Start by copying the provided example file and filling in the required values:
 cp .env.example .env   # macOS/Linux
 copy .env.example .env # Windows
 
+### 5. Setup Sample Dataset
+
+#### Yahoo finance API
+To test data access and prepare a small sample dataset from Yahoo Finance:
+
+Run the provided script in tests/:
+
+python tests/test_yahoo_access.py
+
+
+This script downloads a small sample dataset and saves it locally in:
+
+tests/data/
+
 ## 🧠 Description
 
 The project implements a multi-agent NLP system where agents collaborate to process and analyze text data.
