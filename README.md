@@ -1,58 +1,101 @@
 # NLP-Multi-Agent-System - Group 5
 
-This project explores a multi-agent system for Natural Language Processing (NLP) tasks.
-It has been developed as part of a group project (Group 5).
+This project explores the implementation of a **multi-agent system for Natural Language Processing (NLP)** tasks.  
+It has been developed as part of a **university group project (Group 5)**.
+
+The system is composed of several agents that collaborate to process and analyze text data.  
+Each agent is responsible for a specific task within the NLP pipeline — such as **data preprocessing**, **information retrieval**, **model inference**, or **evaluation** — enabling modularity and cooperative problem solving.
 
 ## 🚀 Local Setup
 
 Follow these steps to set up the project locally:
 
 ### 1. Clone the repository
-git clone https://github.com/Almudenagarrido/NLP-Multi-Agent-System
-cd NLP-Multi-Agent-System
+
+ git clone https://github.com/Almudenagarrido/NLP-Multi-Agent-System
+ cd NLP-Multi-Agent-System
 
 ### 2. Create and activate a virtual environment
 
-python3 -m venv venv  # macOS/Linux
-source venv/bin/activate
+ python3 -m venv venv  # macOS/Linux
+ source venv/bin/activate
 
-python -m venv venv   # Windows
-venv\Scripts\activate
+ python -m venv venv   # Windows
+ venv\Scripts\activate
 
 ### 3. Install dependencies
-pip install -r requirements.txt
 
-### 4. Create a .env file
+ pip install -r requirements.txt
 
-Create a file named .env in the root directory of the project. This file stores environment variables such as API keys or other configuration settings needed for the project.
+## ⚙️ Environment Configuration (.env file)
+
+The project requires some configuration values to be stored in a .env file found in the directory of the project. This file stores environment variables such as API keys or other configuration settings needed for the project.
 
 Start by copying the provided example file and filling in the required values:
 
-cp .env.example .env   # macOS/Linux
-copy .env.example .env # Windows
+ cp .env.example .env   # macOS/Linux
+ copy .env.example .env # Windows
 
-### 5. Setup Sample Dataset
+### 🔑 1. NewsAPI Key
 
-#### Yahoo finance API
-To test data access and prepare a small sample dataset from Yahoo Finance:
+The NewsRetrievalAgent uses NewsAPI to fetch financial and business news.
 
-Run the provided script in tests/:
+To enable this functionality:
 
-python tests/test_yahoo_access.py
+ Go to https://newsapi.org/register.
 
-#### NewsAPI
-To test data access and prepare a small sample dataset from NewsAPI:
+ Create a free account.
+ You will receive an API key (a token string).
+ Copy this key and paste it into your .env file under:
 
-Run the provided script in tests/:
+ NEWS_API_KEY=your_api_key_here
 
-python tests/test_newsapi_access.py
+ This key allows the agent to access the NewsAPI endpoint.
 
-####
-These scripts download a small sample dataset and save it locally in:
+### 💼 2. Available Tickers
 
-tests/data/
+In the same .env file, you can define which financial tickers the agent will track.
+These tickers determine which companies or indices will be used for fetching news.
 
-## 🧠 Description
+Each pair follow the structure -> ticker_symbol:company_name (separated by comas). So the format should be:
 
-The project implements a multi-agent NLP system where agents collaborate to process and analyze text data.
-Each agent has a specific role (e.g., data preprocessing, model inference, evaluation).
+ AVAILABLE_TICKERS=AAPL:Apple Inc.,TSLA:Tesla Inc.,GOOGL:Alphabet Inc.
+
+
+## 🧪 Testing Access to Data Source
+
+### 🔹Yahoo finance API
+To test data access and prepare a small sample dataset from **Yahoo Finance**, run the provided script located in the tests/ directory:
+
+ python tests/test_yahoo_access.py
+
+### 🔹NewsAPI
+
+To verify that your **NewsAPI** key is correctly set up and that the agent can fetch news articles, run:
+
+ python tests/test_newsapi_access.py
+
+Both these scripts will automatically create a small sample dataset and save it locally in:
+
+ tests/data/
+
+## 📰 News Retrieval Agent
+
+The **NewsRetrievalAgent** collects recent financial news for predefined tickers from **Yahoo Finance** and **NewsAPI**.  
+It merges and cleans the results, allowing export to **JSON**, **DataFrame**, or **CSV** formats.
+
+### ⚡ Quick Test
+
+To test its functionality, open:
+
+ agents/news_retrieval_agent.py
+
+Set the variable:
+
+ RUN_TEST = True
+
+and run:
+
+ python agents/news_retrieval_agent.py
+
+This will retrieve sample news (e.g., AAPL, TSLA), print a summary in the terminal, and optionally save the data in data/raw/, as long as your .env file is correctly configured.
