@@ -27,7 +27,9 @@ Follow these steps to set up the project locally:
 
  pip install -r requirements.txt
 
-## ⚙️ Environment Configuration (.env file)
+## ⚙️ Environment Configuration
+
+### 📁 Create environment
 
 The project requires some configuration values to be stored in a .env file found in the directory of the project. This file stores environment variables such as API keys or other configuration settings needed for the project.
 
@@ -36,31 +38,23 @@ Start by copying the provided example file and filling in the required values:
  cp .env.example .env   # macOS/Linux
  copy .env.example .env # Windows
 
-### 🔑 1. NewsAPI Key
+### 🔑 NewsAPI Key
 
 The NewsRetrievalAgent uses NewsAPI to fetch financial and business news.
 
 To enable this functionality:
 
- Go to https://newsapi.org/register.
+1. Go to https://newsapi.org/register
 
- Create a free account.
- You will receive an API key (a token string).
- Copy this key and paste it into your .env file under:
+2. Create a free account
+
+3. You will receive an API key
+
+4. Copy this key and paste it into your .env file:
 
  NEWS_API_KEY=your_api_key_here
 
- This key allows the agent to access the NewsAPI endpoint.
-
-### 💼 2. Available Tickers
-
-In the same .env file, you can define which financial tickers the agent will track.
-These tickers determine which companies or indices will be used for fetching news.
-
-Each pair follow the structure -> ticker_symbol:company_name (separated by comas). So the format should be:
-
- AVAILABLE_TICKERS=AAPL:Apple Inc.,TSLA:Tesla Inc.,GOOGL:Alphabet Inc.
-
+ This key allows the agent to access the NewsAPI endpoint and fetch financial news.
 
 ## 🧪 Testing Access to Data Source
 
@@ -83,6 +77,10 @@ Both these scripts will automatically create a small sample dataset and save it 
 
 The **NewsRetrievalAgent** collects recent financial news for predefined tickers from **Yahoo Finance** and **NewsAPI**.  
 It merges and cleans the results, allowing export to **JSON**, **DataFrame**, or **CSV** formats.
+
+### ⚙️ Dynamic Ticker Discovery
+
+Automatically converts company names to stock symbols using real-time financial data from Yahoo Finance.
 
 ### ⚡ Quick Test
 
