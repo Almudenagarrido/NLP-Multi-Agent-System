@@ -32,7 +32,7 @@ src/main/outline.ipynb
 
 This notebook goes through the entire flow —
 from user query → topic classification → response generation → answer storage.
-(Evaluation is not yet included.)
+(Evaluation and Sentiment Analysis is not yet included.)
 
 # ✅ Summary:
 
