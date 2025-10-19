@@ -29,7 +29,7 @@ Follow these steps to set up the project locally:
 
 ## ⚙️ Environment Configuration
 
-### 📁 Create environment
+### 📁 Create .env document
 
 The project requires some configuration values to be stored in a .env file found in the directory of the project. This file stores environment variables such as API keys or other configuration settings needed for the project.
 
@@ -97,3 +97,23 @@ and run:
  python agents/news_retrieval_agent.py
 
 This will retrieve sample news (e.g., AAPL, TSLA), print a summary in the terminal, and optionally save the data in data/raw/, as long as your .env file is correctly configured.
+
+## ❤️ Sentiment Analysis Agent
+
+The *SentimentAnalysisAgent* analyzes financial news content and classifies sentiment as **positive**, **negative**, or **neutral**. It uses specialized models trained on financial texts for accurate market sentiment detection.
+
+### ⚡ Quick Test
+
+To test its functionality, open:
+
+ agents/sentiment_analysis_agent.py
+
+Set the variable:
+
+ RUN_TEST = True
+
+and run:
+
+ python agents/sentiment_analysis_agent.py
+
+This will analyze sample financial news headlines, print sentiment tags with confidence scores in the terminal, and show the probability distribution for each classification.

@@ -264,7 +264,7 @@ def test_agent(show_json=True, save_csv=False):
     print("=" * 60)
 
 if __name__ == "__main__":
-    RUN_TEST = True
+    RUN_TEST = False
     
     if RUN_TEST:
         test_agent(show_json=True, save_csv=False)
