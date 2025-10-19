@@ -4,6 +4,7 @@
 Before running the project, make sure to install the required tokenizers:
 ```bash
 pip install sentencepiece tiktoken
+```
 
 🚀 Usage
 
