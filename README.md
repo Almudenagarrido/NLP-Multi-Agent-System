@@ -1,101 +1,42 @@
-# NLP-Multi-Agent-System - Group 5
+# 🧠 NLP Multi-Agent News System
 
-This project explores the implementation of a **multi-agent system for Natural Language Processing (NLP)** tasks.  
-It has been developed as part of a **university group project (Group 5)**.
+## ⚙️ Setup
+Before running the project, make sure to install the required tokenizers:
+```bash
+pip install sentencepiece tiktoken
 
-The system is composed of several agents that collaborate to process and analyze text data.  
-Each agent is responsible for a specific task within the NLP pipeline — such as **data preprocessing**, **information retrieval**, **model inference**, or **evaluation** — enabling modularity and cooperative problem solving.
+🚀 Usage
 
-## 🚀 Local Setup
+Train the specialized agents
+From the project’s main folder, run:
 
-Follow these steps to set up the project locally:
-
-### 1. Clone the repository
-
- git clone https://github.com/Almudenagarrido/NLP-Multi-Agent-System
- cd NLP-Multi-Agent-System
-
-### 2. Create and activate a virtual environment
-
- python3 -m venv venv  # macOS/Linux
- source venv/bin/activate
-
- python -m venv venv   # Windows
- venv\Scripts\activate
-
-### 3. Install dependencies
-
- pip install -r requirements.txt
-
-## ⚙️ Environment Configuration (.env file)
-
-The project requires some configuration values to be stored in a .env file found in the directory of the project. This file stores environment variables such as API keys or other configuration settings needed for the project.
-
-Start by copying the provided example file and filling in the required values:
-
- cp .env.example .env   # macOS/Linux
- copy .env.example .env # Windows
-
-### 🔑 1. NewsAPI Key
-
-The NewsRetrievalAgent uses NewsAPI to fetch financial and business news.
-
-To enable this functionality:
-
- Go to https://newsapi.org/register.
-
- Create a free account.
- You will receive an API key (a token string).
- Copy this key and paste it into your .env file under:
-
- NEWS_API_KEY=your_api_key_here
-
- This key allows the agent to access the NewsAPI endpoint.
-
-### 💼 2. Available Tickers
-
-In the same .env file, you can define which financial tickers the agent will track.
-These tickers determine which companies or indices will be used for fetching news.
-
-Each pair follow the structure -> ticker_symbol:company_name (separated by comas). So the format should be:
-
- AVAILABLE_TICKERS=AAPL:Apple Inc.,TSLA:Tesla Inc.,GOOGL:Alphabet Inc.
+python src/agents/specialized_agents_training.py
 
 
-## 🧪 Testing Access to Data Source
+This will create the topic-specific generator models inside:
 
-### 🔹Yahoo finance API
-To test data access and prepare a small sample dataset from **Yahoo Finance**, run the provided script located in the tests/ directory:
+src/agents/specialized_agents/
 
- python tests/test_yahoo_access.py
 
-### 🔹NewsAPI
+The current base model being fine-tuned is:
 
-To verify that your **NewsAPI** key is correctly set up and that the agent can fetch news articles, run:
+google/flan-t5-large
 
- python tests/test_newsapi_access.py
 
-Both these scripts will automatically create a small sample dataset and save it locally in:
+Run the main pipeline
+Open and execute the notebook:
 
- tests/data/
+src/main/outline.ipynb
 
-## 📰 News Retrieval Agent
 
-The **NewsRetrievalAgent** collects recent financial news for predefined tickers from **Yahoo Finance** and **NewsAPI**.  
-It merges and cleans the results, allowing export to **JSON**, **DataFrame**, or **CSV** formats.
+This notebook goes through the entire flow —
+from user query → topic classification → response generation → answer storage.
+(Evaluation is not yet included.)
 
-### ⚡ Quick Test
+✅ Summary:
 
-To test its functionality, open:
+Install dependencies (sentencepiece, tiktoken)
 
- agents/news_retrieval_agent.py
+Fine-tune agents with specialized_agents_training.py
 
-Set the variable:
-
- RUN_TEST = True
-
-and run:
-
- python agents/news_retrieval_agent.py
-
-This will retrieve sample news (e.g., AAPL, TSLA), print a summary in the terminal, and optionally save the data in data/raw/, as long as your .env file is correctly configured.
+Run full pipeline with outline.ipynb
