@@ -30,4 +30,3 @@ def get_ticker_from_company_name(company_name):
         return None
     except Exception as e:
         return None
-    
