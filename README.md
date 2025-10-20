@@ -86,7 +86,7 @@ Automatically converts company names to stock symbols using real-time financial 
 
 To test its functionality, open:
 
- agents/news_retrieval_agent.py
+ src/agents/news_retrieval_agent.py
 
 Set the variable:
 
@@ -94,7 +94,7 @@ Set the variable:
 
 and run:
 
- python agents/news_retrieval_agent.py
+ python src/agents/news_retrieval_agent.py
 
 This will retrieve sample news (e.g., AAPL, TSLA), print a summary in the terminal, and optionally save the data in data/raw/, as long as your .env file is correctly configured.
 
@@ -106,7 +106,7 @@ The *SentimentAnalysisAgent* analyzes financial news content and classifies sent
 
 To test its functionality, open:
 
- agents/sentiment_analysis_agent.py
+ src/agents/sentiment_analysis_agent.py
 
 Set the variable:
 
@@ -114,9 +114,41 @@ Set the variable:
 
 and run:
 
- python agents/sentiment_analysis_agent.py
+ python src/agents/sentiment_analysis_agent.py
 
 This will analyze sample financial news headlines, print sentiment tags with confidence scores in the terminal, and show the probability distribution for each classification.
+
+## 📊 Evaluator Optimizer Agent
+
+The EvaluatorOptimizerAgent provides quality assessment and actionable feedback for specialist responses. It evaluates responses based on multiple criteria including relevance, accuracy, completeness, context usage, and clarity, generating structured feedback to improve response quality.
+
+### 🎯 Evaluation Criteria
+
+- **Relevance**: Does the answer directly address the original query?
+
+- **Accuracy**: Is the information factually correct based on news summaries?
+
+- **Completeness**: Does it cover all aspects of the user's question?
+
+- **Context Usage**: Does it leverage news, past Q&A, and SA label effectively?
+
+- **Clarity**: Is the response clear and well-structured?
+
+### ⚡ Quick Test
+
+To test its functionality, open:
+
+ src/agents/evaluator_optimizer_agent.py
+
+Set the variable:
+
+ RUN_TEST = True
+
+and run:
+
+ python src/agents/evaluator_optimizer_agent.py
+
+This will run a sample evaluation on a test response, printing the overall score, critical issues, strengths, and actionable feedback in a structured JSON format.
 
 ## 🧠 Train the Specialized Agents
 
