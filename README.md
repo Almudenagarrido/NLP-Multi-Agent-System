@@ -117,3 +117,30 @@ and run:
  python agents/sentiment_analysis_agent.py
 
 This will analyze sample financial news headlines, print sentiment tags with confidence scores in the terminal, and show the probability distribution for each classification.
+
+## 🧠 Train the Specialized Agents
+
+From the project’s main folder, run:
+
+ python src/agents/specialized_agents_training.py
+
+This will create topic-specific generator models inside:
+
+ src/agents/specialized_agents/
+
+The current base model being fine-tuned is:
+
+ google/flan-t5-large
+
+## 🧩 Running the Full Pipeline
+
+Once the agents have been trained and the environment is configured, you can execute the full system flow.
+
+### ▶️ Steps
+
+Open and run the main notebook:
+
+ src/main/outline.ipynb
+
+This notebook demonstrates the complete workflow:
+  → user query → topic classification → response generation → answer storage
