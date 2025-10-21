@@ -86,7 +86,7 @@ Automatically converts company names to stock symbols using real-time financial 
 
 To test its functionality, open:
 
- agents/news_retrieval_agent.py
+ src/agents/news_retrieval_agent.py
 
 Set the variable:
 
@@ -94,7 +94,7 @@ Set the variable:
 
 and run:
 
- python agents/news_retrieval_agent.py
+ python src/agents/news_retrieval_agent.py
 
 This will retrieve sample news (e.g., AAPL, TSLA), print a summary in the terminal, and optionally save the data in data/raw/, as long as your .env file is correctly configured.
 
@@ -106,7 +106,7 @@ The *SentimentAnalysisAgent* analyzes financial news content and classifies sent
 
 To test its functionality, open:
 
- agents/sentiment_analysis_agent.py
+ src/agents/sentiment_analysis_agent.py
 
 Set the variable:
 
@@ -114,9 +114,57 @@ Set the variable:
 
 and run:
 
- python agents/sentiment_analysis_agent.py
+ python src/agents/sentiment_analysis_agent.py
 
 This will analyze sample financial news headlines, print sentiment tags with confidence scores in the terminal, and show the probability distribution for each classification.
+
+## 📊 Evaluator Optimizer Agent
+
+The EvaluatorOptimizerAgent provides intelligent quality assessment using semantic similarity analysis. It evaluates specialist responses across multiple dimensions by measuring how well the response aligns with the original query, news context, and historical conversations.
+
+### 🎯 Evaluation Criteria
+
+Using **Sentence Transformers**, the evaluator measures:
+
+- **Relevance**: Semantic similarity between response and original query
+
+- **Accuracy**: Alignment with factual information from news summaries
+
+- **Completeness**: Response length and content diversity
+
+- **Context Usage**: Incorporation of news and historical Q&A data
+
+- **Clarity**: Internal coherence and logical flow of the response
+
+### 📈 Multi-Dimensional Scoring
+
+Each dimension receives a score 0-100, with an overall weighted average:
+
+- Relevance to user query (20%)
+
+- Factual accuracy from news (20%)
+
+- Context utilization (20%)
+
+- Response completeness (20%)
+
+- Clarity and structure (20%)
+
+### ⚡ Quick Test
+
+To test its functionality, open:
+
+ src/agents/evaluator_optimizer_agent.py
+
+Set the variable:
+
+ RUN_TEST = True
+
+and run:
+
+ python src/agents/evaluator_optimizer_agent.py
+
+This will run a sample evaluations showing This will run sample evaluations showing an overall quality score (0-100), detailed dimension scores, the specific critical issues identified, strengths found in the response and actionable improvement suggestions.
 
 ## 🧠 Train the Specialized Agents
 
