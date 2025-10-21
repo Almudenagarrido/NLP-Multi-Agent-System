@@ -36,6 +36,7 @@ The project requires some configuration values to be stored in a .env file found
 Start by copying the provided example file and filling in the required values:
 
  cp .env.example .env   # macOS/Linux
+ 
  copy .env.example .env # Windows
 
 ### 🔑 NewsAPI Key

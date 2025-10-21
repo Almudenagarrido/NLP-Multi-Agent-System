@@ -37,5 +37,37 @@
             "feedback": "",
             "answer": "The company reported robust Q4 results and strong demand for Azure AI."
         }
+    ],
+    "TSLA": [
+        {
+            "question": "What factors are affecting Tesla's profitability in the current market?",
+            "articles": [
+                "Tesla (TSLA) is on course to report third quarter earnings results this Wednesday, October 22. Investors are eager to hear more about the performance of the EV developer's robotaxi service since launching in Austin, Texas, in June 2025. Barron's Associate Editor Al Root sits down with Market Domination host Josh Lipton to discuss the information investors will be most eager to hear about Tesla's robotaxi business. Also catch Yahoo Finance's Pras Subramanian lay out Wall Street's expectations for Tesla this past quarter. To watch more expert insights and analysis on the latest market action, check out more&nbsp;Market Domination.",
+                "Wall Street is gearing up for a heavy-hitting earnings season, with the federal government still in shutdown.",
+                "While Amazon (AMZN) shares were roughly flat despite a widespread AWS outage, today's big movers include Beyond Meats (BYND), which recovered some losses after sliding over 99.65% in the last five years. Investors bought Paramount Skydance (PSKY) after reports that it will layoff 2,000 workers. French luxury company Kering (KER.PA) is selling its beauty unit, including fragrances branded Gucci and Bottega Veneta, to L'Or\u00e9al (LRLCY). TKMS (TKMS.DE), the marine defense spin-off of German giant Thyssenkrupp, soars in its market debut. And Tesla (TSLA) gears up for a highly anticipated earnings report. For more live coverage of markets watch the full episode of Market Sunrise and head to Yahoo Finance.",
+                "By zeroing in on the infrared scale, researchers offer details of the black hole jet stream in faraway galaxy M87.",
+                "HONG KONG (AP) \u2014 China\u2019s economy expanded at the slowest annual pace in a year in July- September, growing 4.8%, weighed down by trade tensions with the United States and slack domestic demand. The July-September data was the weakest pace of growth since the \u2026",
+                "Though we're going to have a more detailed preview coming later this week, we have a look at what's ahead with CBS and Showrunner Jennie Snyder Urman's Kathy Bates-starring Matlock. Along with our official overview and image gallery for this Thursday's episod\u2026"
+            ],
+            "SA": "negative",
+            "feedback": "Response could better address the original question. Response could be more comprehensive and detailed. Focus on: Response could better address the original question.. Response could be more comprehensive and detailed.",
+            "answer": "The EV developer's robotaxi business since launching in Austin, Texas, in June 2025."
+        }
+    ],
+    "NVDA": [
+        {
+            "question": "What is NVIDIA's pricing strategy for their new graphics cards?",
+            "articles": [
+                "Google, Amazon, Microsoft, and OpenAI are forging ahead with their in-house chip design efforts.",
+                "Editor's Note: A typographical error in this story's headline has been corrected. Apple Inc. (NASDAQ:AAPL) CEO Tim Cook lauded Chinese app developers for their significant role in the company\u2019s innovation ecosystem. Cook Praises China's Vibrant App ...",
+                "The cryptocurrency market just experienced what traders are calling the worst liquidation event in history\u2014a flash crash so severe it made the FTX collapse look tame by comparison, wiping out over $20 billion in leveraged positions and leaving retail ...",
+                "[\u682a\u5f0f\u4f1a\u793e\u30ab\u30ca\u30c0\u30b0\u30fc\u30b9\u30b8\u30e3\u30d1\u30f3]\n[\u753b\u50cf1: https://prcdn.freetls.fastly.net/release_image/104161/76/104161-76-e43fb11dc0da592207b72f3a994e0727-3000x2001.jpg?width=536&quality=85%2C75&format=jpeg&auto=webp&fit=bounds&...",
+                "[\u5357\u8db3\u67c4\u5e02]\n[\u753b\u50cf1: https://prcdn.freetls.fastly.net/release_image/110226/24/110226-24-06a081824cff4257244dd794178677da-1920x1080.jpg?width=536&quality=85%2C75&format=jpeg&auto=webp&fit=bounds&...",
+                "[\u682a\u5f0f\u4f1a\u793e \u4f50\u8cc0\u7389\u5c4b]\n[\u753b\u50cf1: https://prcdn.freetls.fastly.net/release_image/106657/87/106657-87-760580b686ca5bea588289bd9a5e4e3f-1080x606.jpg?width=536&quality=85%2C75&format=jpeg&auto=webp&fit=bounds&a..."
+            ],
+            "SA": "negative",
+            "feedback": "Consider incorporating more specific data from the news. Make better use of the available context and history. Focus on: Consider incorporating more specific data from the news.. Make better use of the available context and history.",
+            "answer": "NVIDIA's pricing strategy for their new graphics cards is to sell at a discount."
+        }
     ]
 }
