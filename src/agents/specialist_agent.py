@@ -25,15 +25,18 @@ class Specialist:
 Query: {query}
 
 News Summaries:
-{news_context}
+    {news_context}
 
-Past Queries and Answers:
-{past_qas}
+Optional Hints from Past Queries (use only if relevant):
+    {past_qas}
 
 Feedback: {feedback}
 SA_label: {SA_label}
 
-Answer the query based on the above context."""
+Instruction:
+    Answer the query based on the news summaries.
+    Do NOT repeat past answers verbatim.
+    Use past queries only as supporting information.."""
         
         inputs = self.tokenizer(prompt, return_tensors="pt", truncation=True, padding="max_length", max_length=1024)
         if torch.cuda.is_available():
