@@ -57,6 +57,11 @@ To enable this functionality:
 
  This key allows the agent to access the NewsAPI endpoint and fetch financial news.
 
+#### 🔒 Note on API Key
+
+For grading purposes, a temporary NewsAPI key has been included in the .env file so that the system runs without extra setup.
+In real projects, API keys should never be shared and must be kept private.
+
 ## 🧪 Testing Access to Data Source
 
 ### 🔹Yahoo finance API
@@ -182,6 +187,10 @@ The current base model being fine-tuned is:
  google/flan-t5-large
 
 ## 🧩 Running the Full Pipeline
+
+Before running the complete pipeline, you can visualize the overall agent workflow below:
+
+![Agent Flow](docs/agents_flow.svg)
 
 Once the agents have been trained and the environment is configured, you can execute the full system flow.
 
