@@ -1,0 +1,10 @@
+data/
+tests/data
+venv/
+.env
+__pycache__/
+*.pyc
+*.log
+.vscode/
+.idea/
+src/agents/specialized_agents
