@@ -227,7 +227,7 @@ class NewsRetrievalAgent:
 def test_agent(show_json=True, save_csv=False):
     agent = NewsRetrievalAgent()
     
-    print("\n🚀 INITIATING TEST OF NEWS RETRIEVAL AGENT")
+    print("\n🚀 Testing News Retrieval Agent")
     print("=" * 60)
     
     companies = ['Apple', 'Tesla', 'Microsoft', 'Amazon', 'Google']

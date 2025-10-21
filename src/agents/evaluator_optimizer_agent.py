@@ -94,7 +94,8 @@ class EvaluatorOptimizer:
 
 
 def test_evaluator():
-    print("🧪 Testing Enhanced EvaluatorOptimizer")
+
+    print("🧠 Testing Evaluator Optimizer Agent...")
     print("="*50)
 
     print("📊 Test 1 - Good response")

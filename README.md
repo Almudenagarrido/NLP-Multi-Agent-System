@@ -188,7 +188,7 @@ Once the agents have been trained and the environment is configured, you can exe
 
 Open and run the main notebook:
 
- src/main/outline.ipynb
+ src/main/pipeline.ipynb
 
 This notebook demonstrates the complete workflow:
   → user query → topic classification → response generation → answer storage
