@@ -120,19 +120,35 @@ This will analyze sample financial news headlines, print sentiment tags with con
 
 ## 📊 Evaluator Optimizer Agent
 
-The EvaluatorOptimizerAgent provides quality assessment and actionable feedback for specialist responses. It evaluates responses based on multiple criteria including relevance, accuracy, completeness, context usage, and clarity, generating structured feedback to improve response quality.
+The EvaluatorOptimizerAgent provides intelligent quality assessment using semantic similarity analysis. It evaluates specialist responses across multiple dimensions by measuring how well the response aligns with the original query, news context, and historical conversations.
 
 ### 🎯 Evaluation Criteria
 
-- **Relevance**: Does the answer directly address the original query?
+Using **Sentence Transformers**, the evaluator measures:
 
-- **Accuracy**: Is the information factually correct based on news summaries?
+- **Relevance**: Semantic similarity between response and original query
 
-- **Completeness**: Does it cover all aspects of the user's question?
+- **Accuracy**: Alignment with factual information from news summaries
 
-- **Context Usage**: Does it leverage news, past Q&A, and SA label effectively?
+- **Completeness**: Response length and content diversity
 
-- **Clarity**: Is the response clear and well-structured?
+- **Context Usage**: Incorporation of news and historical Q&A data
+
+- **Clarity**: Internal coherence and logical flow of the response
+
+### 📈 Multi-Dimensional Scoring
+
+Each dimension receives a score 0-100, with an overall weighted average:
+
+- Relevance to user query (20%)
+
+- Factual accuracy from news (20%)
+
+- Context utilization (20%)
+
+- Response completeness (20%)
+
+- Clarity and structure (20%)
 
 ### ⚡ Quick Test
 
@@ -148,7 +164,7 @@ and run:
 
  python src/agents/evaluator_optimizer_agent.py
 
-This will run a sample evaluation on a test response, printing the overall score, critical issues, strengths, and actionable feedback in a structured JSON format.
+This will run a sample evaluations showing This will run sample evaluations showing an overall quality score (0-100), detailed dimension scores, the specific critical issues identified, strengths found in the response and actionable improvement suggestions.
 
 ## 🧠 Train the Specialized Agents
 

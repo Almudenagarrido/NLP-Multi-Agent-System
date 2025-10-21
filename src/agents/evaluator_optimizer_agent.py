@@ -1,148 +1,139 @@
-import json
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from sentence_transformers import SentenceTransformer, util
+import numpy as np
 
 class EvaluatorOptimizer:
 
-    def __init__(self, model_name="HuggingFaceH4/zephyr-7b-alpha"):
-                
-        self.evaluation_criteria = {
-            "relevance": "Does the answer directly address the original query?",
-            "accuracy": "Is the information factually correct based on news summaries?",
-            "completeness": "Does it cover all aspects of the user's question?",
-            "context_usage": "Does it properly leverage news summaries, past Q&A, and SA label?",
-            "clarity": "Is the response clear, well-structured and easy to understand?"
+    def __init__(self, model_name="all-MiniLM-L6-v2"):
+        
+        self.model = SentenceTransformer(model_name)
+        if torch.cuda.is_available():
+            self.model = self.model.to("cuda")
+
+        self.evaluation_criteria = ["relevance", "accuracy", "completeness", "context_usage", "clarity"]
+
+    def evaluate_response(self, original_query, news_summaries, past_queries, specialist_response):
+
+        query_emb = self.model.encode(original_query, convert_to_tensor=True)
+        response_emb = self.model.encode(specialist_response, convert_to_tensor=True)
+        relevance_score = util.pytorch_cos_sim(response_emb, query_emb).item()
+
+        if news_summaries:
+            news_text = " ".join(news_summaries)
+            news_emb = self.model.encode(news_text, convert_to_tensor=True)
+            accuracy_score = util.pytorch_cos_sim(response_emb, news_emb).item()
+        else:
+            accuracy_score = 0.5
+
+        context_parts = []
+        if news_summaries:
+            context_parts.extend(news_summaries)
+        if past_queries:
+            context_parts.extend([f"{p['question']} {p['answer']}" for p in past_queries])
+        
+        if context_parts:
+            context_text = " ".join(context_parts)
+            context_emb = self.model.encode(context_text, convert_to_tensor=True)
+            context_score = util.pytorch_cos_sim(response_emb, context_emb).item()
+        else:
+            context_score = 0.3
+        
+        words = specialist_response.split()
+        completeness_score = min(1.0, len(words) / 50)
+        unique_words = len(set(words))
+        diversity_score = min(1.0, unique_words / max(1, len(words)))
+        completeness_score = (completeness_score + diversity_score) / 2
+
+        sentences = specialist_response.split('.')
+        if len(sentences) > 1:
+            sentence_embs = self.model.encode([s.strip() for s in sentences if s.strip()])
+            clarity_scores = []
+            for i in range(len(sentence_embs)-1):
+                sim = util.pytorch_cos_sim(
+                    torch.tensor(sentence_embs[i]).unsqueeze(0), 
+                    torch.tensor(sentence_embs[i+1]).unsqueeze(0)
+                ).item()
+                clarity_scores.append(sim)
+            clarity_score = np.mean(clarity_scores) if clarity_scores else 0.7
+        else:
+            clarity_score = 0.6
+
+        scores = {
+            "relevance": int(relevance_score * 100),
+            "accuracy": int(accuracy_score * 100),
+            "completeness": int(completeness_score * 100),
+            "context_usage": int(context_score * 100),
+            "clarity": int(clarity_score * 100),
+            "overall_score": int((relevance_score + accuracy_score + context_score + completeness_score + clarity_score) / 5 * 100)
         }
-        
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.model = AutoModelForCausalLM.from_pretrained(model_name)
-        self.model.eval()
-        
-        if torch.cuda.is_available():
-            self.model.to("cuda")
-    
-    def evaluate_response(self, original_query, news_summaries, past_queries, specialist_response, SA_label, specialist_prompt):
-        
-        prompt = self._create_evaluation_prompt(
-            original_query, news_summaries, past_queries, 
-            specialist_response, SA_label, specialist_prompt
-        )
-        
-        llm_output = self._generate_evaluation(prompt)
-        
-        try:
-            evaluation = json.loads(llm_output)
-        except:
-            evaluation = llm_output
-        
-        return evaluation
-    
-    def _create_evaluation_prompt(self, original_query, news_summaries, past_queries, specialist_response, SA_label, specialist_prompt):
 
-        prompt = f"""
-You are an expert response evaluator. Your task is to analyze the specialist's response and provide CONCRETE, ACTIONABLE feedback to improve THIS specific response.
-
-EVALUATION CONTEXT:
-ORIGINAL QUERY: {original_query}
-
-NEWS SUMMARIES:
-{chr(10).join(news_summaries)}
-
-PAST QUERIES & ANSWERS:
-{chr(10).join([f"Q: {pq['question']} | A: {pq['answer']}" for pq in past_queries])}
-
-SA LABEL: {SA_label}
-
-SPECIALIST'S RESPONSE:
-{specialist_response}
-
-PROMPT USED BY SPECIALIST:
-{specialist_prompt}
-
-EVALUATION CRITERIA:
-1. RELEVANCE: Does it directly answer the original query?
-2. ACCURACY: Is it factually correct based on news summaries?
-3. COMPLETENESS: Does it address all parts of the query?
-4. CONTEXT USAGE: Does it leverage news, past Q&A, and SA label effectively?
-5. CLARITY: Is the response clear and well-structured?
-
-OUTPUT FORMAT (JSON only):
-{{
-    "overall_score": 0-100,
-    "critical_issues": ["list of main problems that need fixing"],
-    "strengths": ["what was done well in this response"],
-    "actionable_feedback": "concrete instructions to improve THIS specific response"
-}}
-
-Be brutally honest and specific. Focus on what can be improved in THIS response.
-"""
-        return prompt
-
-    def _generate_evaluation(self, prompt):
+        feedback_parts = []
+        if relevance_score < 0.5:
+            feedback_parts.append("Response could better address the original question.")
+        if accuracy_score < 0.4:
+            feedback_parts.append("Consider incorporating more specific data from the news.")
+        if context_score < 0.3:
+            feedback_parts.append("Make better use of the available context and history.")
+        if completeness_score < 0.6:
+            feedback_parts.append("Response could be more comprehensive and detailed.")
+        if clarity_score < 0.6:
+            feedback_parts.append("Improve clarity and logical flow between ideas.")
         
-        formatted_prompt = f"<s>[INST] {prompt} [/INST]"
-        
-        inputs = self.tokenizer(formatted_prompt, return_tensors="pt", truncation=True, max_length=2048)
-        
-        if torch.cuda.is_available():
-            inputs = {k: v.to("cuda") for k, v in inputs.items()}
-        
-        with torch.no_grad():
-            outputs = self.model.generate(
-                **inputs,
-                max_new_tokens=512,
-                temperature=0.3,
-                do_sample=True,
-                pad_token_id=self.tokenizer.eos_token_id,
-                repetition_penalty=1.1
-            )
-        
-        response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-        
-        if "[/INST]" in response:
-            response = response.split("[/INST]")[1].strip()
-        
-        return response
+        if not feedback_parts:
+            feedback_parts.append("Good overall alignment with context and query.")
+
+        feedback = " ".join(feedback_parts)
+
+        return {
+            "overall_score": scores["overall_score"],
+            "dimension_scores": scores,
+            "critical_issues": [fb for fb in feedback_parts if any(word in fb.lower() for word in ["could", "consider", "improve", "better"])],
+            "strengths": [fb for fb in feedback_parts if "good" in fb.lower()],
+            "actionable_feedback": feedback
+        }
 
 
 def test_evaluator():
-    print("🧪 Testing EvaluatorOptimizer...")
-    
+    print("🧪 Testing Enhanced EvaluatorOptimizer")
+    print("="*50)
+
+    print("📊 Test 1 - Good response")
     original_query = "How are Apple's stocks performing?"
-    news_summaries = [
-        "Apple reported strong earnings with 15% revenue growth",
-        "New iPhone sales exceeded expectations in Q3"
-    ]
+    news_summaries = ["Apple reported strong earnings with 15% revenue growth in Q4 2024"]
     past_queries = [
         {"question": "What is Apple's market cap?", "answer": "Apple's market cap is around $2.8 trillion"}
     ]
-    specialist_response = "Apple stocks are doing well with positive earnings."
-    SA_label = "positive"
-    specialist_prompt = "You are a financial specialist. Answer based on the news."
-    
+    specialist_response = "Apple stocks are performing very well with strong earnings growth of 15% and positive market sentiment. The company continues to show robust financial performance."
+
     evaluator = EvaluatorOptimizer()
-    
-    print("📊 Running evaluation...")
     result = evaluator.evaluate_response(
         original_query=original_query,
         news_summaries=news_summaries,
         past_queries=past_queries,
-        specialist_response=specialist_response,
-        SA_label=SA_label,
-        specialist_prompt=specialist_prompt
+        specialist_response=specialist_response
     )
-    
+
     print("\n✅ Evaluation Result:")
-    print(f"Type: {type(result)}")
-    if isinstance(result, dict):
-        for key, value in result.items():
-            print(f"{key}: {value}")
-    else:
-        print(f"Raw output: {result}")
+    for key, value in result.items():
+        print(f"{key}: {value}")
+
+    print("\n" + "="*50)
+    print("📊 Test 2 - Poor response")
+    bad_response = "The weather is nice today. I like coffee."
+    result2 = evaluator.evaluate_response(
+        original_query=original_query,
+        news_summaries=news_summaries,
+        past_queries=past_queries,
+        specialist_response=bad_response
+    )
+
+    print("\n❌ Evaluation Result:")
+    for key, value in result2.items():
+        print(f"{key}: {value}")
 
 
 if __name__ == "__main__":
-    RUN_TEST = True
-    
+    RUN_TEST = False
+
     if RUN_TEST:
         test_evaluator()
